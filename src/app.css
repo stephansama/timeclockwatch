@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* disallow copying/dragging images */
+@layer base {
+	html {
+		@apply scroll-smooth antialiased;
+	}
+	body {
+		@apply mx-auto flex min-h-screen max-w-7xl flex-col px-4 dark:bg-zinc-900 dark:text-zinc-50;
+	}
+	main {
+		@apply -mt-16 flex min-h-screen  flex-grow flex-col pt-16;
+	}
+	input {
+		@apply rounded-md text-black;
+	}
+	img,
+	svg,
+	picture {
+		@apply pointer-events-none select-none;
+	}
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@apply scroll-m-16;
+	}
+}
