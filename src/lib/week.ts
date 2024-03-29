@@ -19,13 +19,12 @@ export const storedWeek = JSON.parse(
 	window.localStorage.getItem("week") || "null",
 ) as WorkWeek | null;
 
-export const workWeek = writable<WorkWeek>(
-	storedWeek ||
-		DaysOfTheWeek.reduce(
-			(prev, curr) => ({ ...prev, [curr]: [] }),
-			{} as WorkWeek,
-		),
+const emptyWeek = DaysOfTheWeek.reduce(
+	(prev, curr) => ({ ...prev, [curr]: [] }),
+	{} as WorkWeek,
 );
+
+export const workWeek = writable<WorkWeek>(storedWeek || emptyWeek);
 
 export const weekTotals = derived(workWeek, ($workWeek) =>
 	Object.entries($workWeek).reduce(
@@ -49,6 +48,11 @@ export const weekTotals = derived(workWeek, ($workWeek) =>
 export const workedTotal = derived(weekTotals, ($weekTotals) =>
 	Object.values($weekTotals).reduce((p, c) => p + c, 0),
 );
+
+export const clearWorkWeek = () => {
+	workWeek.set(emptyWeek);
+	window.location.reload();
+};
 
 workWeek.subscribe((week) =>
 	window.localStorage.setItem("week", JSON.stringify(week)),

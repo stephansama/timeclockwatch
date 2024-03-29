@@ -1,13 +1,8 @@
 <script lang="ts">
+	import { cn } from "./cn";
 	import { writable } from "svelte/store";
 	import { convertToHours } from "./hours";
-	import { cn } from "./cn";
-	import {
-		storedWeek,
-		workWeek,
-		weekTotals,
-		type DayOfTheWeek,
-	} from "./week";
+	import { storedWeek, workWeek, weekTotals, type DayOfTheWeek } from "./week";
 
 	export let day: DayOfTheWeek;
 	export let bg: string;
@@ -19,19 +14,19 @@
 		"Clock Out",
 	] as const;
 
-	let punches = writable(
-		timestamps.reduce(
-			(p, c, i) => ({ ...p, [c]: storedWeek?.[day][i] || "" }),
-			{} as Record<(typeof timestamps)[number], string>,
-		),
-	);
-
 	const timestampColors = [
 		"bg-red-200 dark:bg-red-700",
 		"bg-purple-200 dark:bg-purple-700",
 		"bg-green-200 dark:bg-green-700",
 		"bg-blue-200 dark:bg-blue-700",
 	];
+
+	let punches = writable(
+		timestamps.reduce(
+			(p, c, i) => ({ ...p, [c]: storedWeek?.[day][i] || "" }),
+			{} as Record<(typeof timestamps)[number], string>,
+		),
+	);
 
 	punches.subscribe((v) =>
 		workWeek.update((o) => ({ ...o, [day]: Object.values(v) })),
